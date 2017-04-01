@@ -148,9 +148,22 @@ body {
   box-sizing: border-box;
 }
 
-img.center {
-    display: block;
-    margin: 0 auto;
+img {
+  align:center;
+  overflow: scroll;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  border: 5px solid #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 20px #000;
+  top: 20px;
+  left: 561px;
+  right: 0;
+  bottom: 50px;
+  margin: auto;
+  box-sizing: border-box;
 }
 
 .chat .messages {
@@ -278,7 +291,7 @@ text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
 
   <div class="bottom" id="userPage">
 
-    <p>test</p>
+    <p onclick="markActiveLink(this);">test</p>
   </div>
 
 

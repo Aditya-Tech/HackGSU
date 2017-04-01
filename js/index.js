@@ -2,7 +2,9 @@ var editMode = 1;
 var app;
 var texts = [];
 var lines = [];
-var usedNums = [];
+var usedIds = [];
+var currId = 0;
+var selectedId = 0;
 var numLines = 0;
 var websiteInProgress = 0;
 var prompts = 0;
@@ -74,7 +76,12 @@ app = {
 
 
     if (titlePrompt == 1) {
-      $(".bottom").append("<h1>" + msg + "</h1>");
+      currId = Math.floor((Math.random() * 1000000) + 1);
+      while (usedIds.includes(currId)) {
+        currId = Math.floor((Math.random() * 1000000) + 1);
+      }
+
+      $(".bottom").append('<h1 onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</h1>');
 
       titlePrompt = 0;
       return;
@@ -132,10 +139,10 @@ $(function() {
 
   $('.switch').change(function(){
     $(this).toggleClass('checked');
+    if (editMode == 1) {
+      editMode = 0;
+    } else {
+      editMode = 1;
+    }
   });
-  if (editMode == 1) {
-    editMode == 0;
-  } else {
-    editMode == 1;
-  }
 });
