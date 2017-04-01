@@ -21,10 +21,10 @@ function talking() {
  setInterval(function() {
    if (time <= 1000) {
      if (open) {
-       document.getElementById("image").src = "closed-mouth.png";
+       document.getElementById("faceImage").src = "closed-mouth.png";
        open = false;
      } else if (!open) {
-       document.getElementById("image").src = "open-mouth2.png";
+       document.getElementById("faceImage").src = "open-mouth2.png";
        open = true;
      }
      time++;

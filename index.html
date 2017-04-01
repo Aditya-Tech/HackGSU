@@ -114,10 +114,18 @@ body {
   position:relative;
 }
 
-.center {
+.container {
   background-color: #808080;
   height: 100px;
   position:relative;
+}
+
+.left {
+  display:inline-block;
+}
+
+.right {
+  display:inline-block;
 }
 
 .bottom {
@@ -146,7 +154,7 @@ body {
   box-sizing: border-box;
 }
 
-img {
+#faceImage {
   align:center;
   overflow: scroll;
   background-color: #9DF6FD;
@@ -260,11 +268,12 @@ text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
                  0px -5px 35px rgba(255,255,255,0.3); text-align: center; background-color: #e74c3c">Get started now!</h1>
   </div>
     <div class="top">
+      <img src="robot-left-hand.png" id="imageLeftHand" style="position:absolute;left:350px;top:350px;height:300px;width:300px;">
+      <img src="robot-right-hand.png" id="imageRightHand" style="position:absolute;right:260px;top:280px;height:300px;width:500px;">
+
       <div class="face">
-        <img src="closed-mouth.png" id="image" style="width:304px;height:228px;">
-        <form>
-<input type="button" value="Put Your Text Here" onclick="voiceRec()"/>
-</form>
+        <img src="closed-mouth.png" id="faceImage" style="width:304px;height:228px;">
+
       </div>
       <div class="chat">
         <div class="messages">
@@ -282,32 +291,26 @@ text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
     </div>
   </div>
 
-  <div class="center" id="info-page" >
-    <p class="switchLabel">Toggle Edit Mode</p>
+  <div class="container" id="info-page" >
+    <div class="left" style="background-color:#808080;position:relative;width:1000px;height:100px">
+      <p class="switchLabel" style="position:absolute;right:530px;">Toggle Edit Mode</p>
 
-    <label class="switch checked">
-      <i class="icon-ok"></i>
-      <i class="icon-remove"></i>
-      <input type="checkbox" checked>
-    </label>
+      <label class="switch checked" style="position:absolute; right:460px; top:50px">
+        <i class="icon-ok"></i>
+        <i class="icon-remove"></i>
+        <input type="checkbox" checked>
+      </label>
+    <div class="middle" style="width:400px; position:relative;">
+      Hello
+    </div>
+    <div class="right" style="position:relative;right:250px;">
+      Hello
+    </div>
   </div>
 
   <div class="bottom" id="userPage">
 
     <p onclick="markActiveLink(this);">test</p>
-  </div>
-
-  <div class="voicetest">
-    <form role="form">
-            <legend>Speech to text</legend> <em id="speek-now">Speak now...</em>
-            <div class="form-group">
-                <textarea type="text" class="form-control" id="editer" placeholder="Input field" rows="10"> </textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" id="speek">Click Here to Speek</button>
-        </form>
-
-        <script src="js/voice-recognition-testing.js"></script>
-
   </div>
 
 

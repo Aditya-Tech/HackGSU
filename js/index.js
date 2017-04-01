@@ -23,6 +23,8 @@ var highlightedElement;
 var numListCount = 1;
 var c = 0;
 
+var firstChosen = 0;
+
 
 // possible user-entered keywords
 var greetings = ["Hello, I am Buildy! Do you want me to build you a website?", "Howdy! My name is Buildy and I can make you a website! Do you want me to (Yes/No)?"];
@@ -101,6 +103,10 @@ app = {
         $(this).removeClass("hova");
     });
 
+    if (msg.indexOf("Center") >= 0 || msg.indexOf("center") >= 0) {
+      document.getElementById(selectedId).style.textAlign = "center";
+    }
+
     if (bgPrompt == 1) {
       var color = msg;
       hoverEffect();
@@ -116,7 +122,6 @@ app = {
 
       q.push(['<h1 onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</h1>', currId]);
       $(".bottom").append('<h1 onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</h1>');
-      alert([q[0][1]]);
       hoverEffect();
 
       titlePrompt = 0;
@@ -197,7 +202,7 @@ app = {
       if (msg.indexOf(titles[i]) >= 0) {
           titlePrompt = 1;
           setInterval(function() {
-            if (c <= 2) {
+            if (c <= 4) {
               if (open) {
                 document.getElementById("image").src = "closed-mouth.png";
                 open = false;
@@ -207,7 +212,7 @@ app = {
               }
               c++;
             }
-         }, 150);
+         }, 200);
          c = 0;
         return this.bot_post("You want a to add a " + titles[i] + " to your site? Sure thing! What do you want it to be called?");
       }
