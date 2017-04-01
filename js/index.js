@@ -1,6 +1,8 @@
+var editMode = 1;
 var app;
 var texts = [];
 var lines = [];
+var usedNums = [];
 var numLines = 0;
 var websiteInProgress = 0;
 var prompts = 0;
@@ -8,7 +10,10 @@ var isHexCode  = /^#[0-9A-F]{6}$/i.test('#aabbcc');
 var detected = [];
 var prompted = 0;
 var greeted = 0;
+var titlePrompt = 0;
+var textPrompt = [];
 var q = [];
+var highlightedElement;
 
 
 // possible user-entered keywords
@@ -43,6 +48,7 @@ $(document).ready(function() {
   return app.init();
 });
 
+
 app = {
   init: function() {
     return this.bind_events();
@@ -59,14 +65,24 @@ app = {
     if (msg) {
       $(".text").val("");
       $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
+      usedNums =
+      lines.add
       return this.check(msg);
     }
   },
   check: function(msg) {
 
-    if (prompted == 1) {
+
+    if (titlePrompt == 1) {
+      $(".bottom").append("<h1>" + msg + "</h1>");
+
+      titlePrompt = 0;
+      return;
+    }
+
+    if (prompted == 1 && websiteInProgress != 1) {
       if (msg.indexOf("Yes") >= 0 || msg.indexOf("yes") >= 0) {
-        prompted = 0;
+        websiteInProgress = 1;
         this.bot_post("Great! Let's get started. Try saying 'I want a page with a light blue background and green text.'");
         return;
 
@@ -87,18 +103,14 @@ app = {
     }
 
     for (var i = 0; i < titles.length; i++) {
-      if (msg.indexOf(titles[i]) >= 0 && msg.match(/'([^']+)'/)[1].length > 0) {
+      if (msg.indexOf(titles[i]) >= 0) {
         {
-          return this.bot_post("Your title is " + msg.match(/'([^']+)'/)[1]);
+          titlePrompt = 1;
+          return this.bot_post("You want a to add a " + titles[i] + " to your site? Sure thing! What do you want it to be called?");
         }
       }
     }
 
-    for (var i = 0; i < titles.length; i++) {
-      if (msg.indexOf(titles[i]) >= 0) {
-        return this.bot_post("What is your title?");
-      }
-    }
 
     if (msg.substring(0, 6) === "Hello!" && prompted != 1) {
       prompted = 1;
@@ -115,3 +127,15 @@ app = {
     return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
   }
 };
+
+$(function() {
+
+  $('.switch').change(function(){
+    $(this).toggleClass('checked');
+  });
+  if (editMode == 1) {
+    editMode == 0;
+  } else {
+    editMode == 1;
+  }
+});
