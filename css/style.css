@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+body {
+  background-color: #e74c3c;
+  font-family: Arial;
+}
+
+.chat {
+  width: 300px;
+  overflow: scroll;
+  height: 500px;
+  background-image: url("http://cdn9.staztic.com/app/a/2063/2063481/whatsapp-wallpaper-pack-hd-600519-0-s-156x156.jpg");
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  border: 5px solid #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 20px #000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  box-sizing: border-box;
+}
+.chat .messages {
+  position: absolute;
+  left: 0;
+  bottom: 60px;
+  height: auto;
+  width: 100%;
+}
+.chat .messages .message {
+  padding: 20px 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.chat .messages .message .you, .chat .messages .message .bot {
+  border-radius: 10px;
+  padding: 10px;
+  width: 75%;
+  position: relative;
+}
+.chat .messages .message .you img, .chat .messages .message .bot img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+}
+.chat .messages .message .you:before, .chat .messages .message .bot:before {
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  top: -15px;
+  font-weight: bold;
+  color: #fff;
+  font-size: 12px;
+}
+.chat .messages .message .you {
+  background: #2ecc71;
+  float: right;
+}
+.chat .messages .message .you:before {
+  content: "You:";
+  background-color: #2ecc71;
+  right: 10px;
+}
+.chat .messages .message .bot {
+  background-color: #3498db;
+  float: left;
+}
+.chat .messages .message .bot:before {
+  content: "Bot:";
+  background-color: #3498db;
+  left: 10px;
+}
+.chat .messages .message:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.chat .input {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+  background: #ecf0f1;
+}
+.chat .input .text {
+  background-color: #fff;
+  border-radius: 20px;
+  height: 40px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 270px;
+  box-shadow: inset 0 0 5px #aaa;
+  line-height: 40px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
