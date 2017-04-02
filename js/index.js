@@ -21,7 +21,6 @@ var boldPrompt = 0;
 var imagePrompt = 0;
 var movePrompt = 0;
 var textPrompt = [];
-var q = [];
 var highlightedElement;
 var numListCount = 1;
 var c = 0;
@@ -30,7 +29,11 @@ var inner;
 var msg;
 var sound = 0;
 var firstChosen = 0;
+var dl = "";
 
+
+var q = [];
+var ids = [];
 
 // possible user-entered keywords
 var greetings = ["Hello, I am Buildy! Do you want me to build you a website?", "Howdy! My name is Buildy and I can make you a website! Do you want me to (Yes/No)?"];
@@ -42,6 +45,7 @@ var bulletedList = ["bullet points", "bullets", "bullet", "bulleted list"];
 var numberedList = ["numbered list", "ordered list", "numbers list", "number list", "numbers"];
 var bgColors = ["background color", "background"];
 var images = ["image", "picture", "images", "pictures"];
+var breaks = ["space", "double space", "break"];
 
 
 (function() {
@@ -70,7 +74,7 @@ var images = ["image", "picture", "images", "pictures"];
     speech.onresult = function(event) {
         msg = event.results[0][0].transcript;
         $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
-        app.check(msg);
+        check(msg);
         document.querySelector('#editer').value = event.results[0][0].transcript;
         sound = 1;
         toggle();
@@ -95,15 +99,16 @@ var images = ["image", "picture", "images", "pictures"];
 
 
 function hoverEffect() {
-  $('.bottom').children().mouseover(function(e){
-      $(".hova").removeClass("hova");
-      $(e.target).addClass("hova");
-    return false;
-  }).mouseout(function(e) {
-      $(this).removeClass("hova");
-  });
 
-}
+    $('.bottom').children().mouseover(function(e){
+        $(".hova").removeClass("hova");
+        $(e.target).addClass("hova");
+      return false;
+    }).mouseout(function(e) {
+        $(this).removeClass("hova");
+    });
+  }
+
 
 function findingColors() {
   for (var i = 0; i < bgColors.length; i++) {
@@ -167,13 +172,15 @@ app = {
       return;
     }
 
-    $('.bottom').children().mouseover(function(e){
-        $(".hova").removeClass("hova");
-        $(e.target).addClass("hova");
-      return false;
-    }).mouseout(function(e) {
-        $(this).removeClass("hova");
-    });
+
+      $('.bottom').children().mouseover(function(e){
+          $(".hova").removeClass("hova");
+          $(e.target).addClass("hova");
+        return false;
+      }).mouseout(function(e) {
+          $(this).removeClass("hova");
+      });
+
 
 
     if (msg == "DONE") {
@@ -186,19 +193,6 @@ app = {
       }
       document.getElementById(selectedId).outerHTML = '';
     }
-
-
-    if (msg.indexOf("Move") >= 0 || msg.indexOf("move") >= 0 || msg.indexOf("swap") >= 0 || msg.indexOf("Swap") >= 0) {
-      movePrompt = 1;
-      if (indexOfMover == 0 && indexOfNewPos == 0) {
-        return this.bot_post("Select the element that you want to move.");
-      } else if (indexOfMover != 0 && indexOfNewPos == 0) {
-        return this.bot_post("Select the element that you want to swap the first element with.");
-      } else {
-        return this.bot_post("Something went wrong. Please give me an instruction.");
-      }
-    }
-
 
 
     if (msg.indexOf("Center") >= 0 || msg.indexOf("center") >= 0) {
@@ -242,7 +236,8 @@ app = {
         currId = Math.floor((Math.random() * 1000000) + 1);
       }
 
-      q.push(['<h1 onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</h1>', currId]);
+      q.push('<h1 onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</h1>');
+      ids.push(currId);
       $(".bottom").append('<h1 onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</h1>');
       hoverEffect();
 
@@ -254,7 +249,8 @@ app = {
       while (usedIds.includes(currId)) {
         currId = Math.floor((Math.random() * 1000000) + 1);
       }
-      q.push(['<p onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>' + msg + '</p>', currId]);
+      q.push('<p onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>' + msg + '</p>');
+      ids.push(currId);
       $(".bottom").append('<div><p onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</p></div>');
       hoverEffect();
       paraPrompt = 0;
@@ -266,7 +262,8 @@ app = {
       while (usedIds.includes(currId)) {
         currId = Math.floor((Math.random() * 1000000) + 1);
       }
-      q.push(['<img src=' + msg + ' onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>', currId]);
+      q.push('<img src=' + msg + ' onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>');
+      ids.pudh(currId);
       $(".bottom").append('<img src=' + msg + ' onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>');
       hoverEffect();
       imagePrompt = 0;
@@ -279,8 +276,8 @@ app = {
         while (usedIds.includes(currId)) {
           currId = Math.floor((Math.random() * 1000000) + 1);
         }
-        q.push(['<li onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</li>', currId]);
-
+        q.push('<li onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</li>');
+        ids.push(currId);
         $(".bottom").append('<li onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</li>');
         return this.bot_post("Any other list items? Type 'DONE' when you're finished.");
       }
@@ -295,8 +292,8 @@ app = {
         while (usedIds.includes(currId)) {
           currId = Math.floor((Math.random() * 1000000) + 1);
         }
-        q.push(['<p onclick="markActiveLink(this);" id=' + currId + '>' + numListCount + '.   '+ msg + '</p>', currId]);
-
+        q.push('<p onclick="markActiveLink(this);" id=' + currId + '>' + numListCount + '.   '+ msg + '</p>');
+        ids.push(currId);
         $(".bottom").append('<p onclick="markActiveLink(this);" id=' + currId + '>' + numListCount + '.   '+ msg + '</p>');
         numListCount++;
         return this.bot_post("Any other list items? Type 'DONE' when you're finished.");
@@ -328,6 +325,19 @@ app = {
       if (msg.indexOf(bgColors[i]) >= 0){
         bgPrompt = 1;
         return this.bot_post("You want to change the " + "background color? Sure thing! Choose your color.");
+      }
+    }
+
+    for (var i = 0; i < breaks.length; i++) {
+      if (msg.indexOf(breaks[i]) >= 0){
+        currId = Math.floor((Math.random() * 1000000) + 1);
+        while (usedIds.includes(currId)) {
+          currId = Math.floor((Math.random() * 1000000) + 1);
+        }
+        q.push('<br id=' + currId + '>');
+        ids.push(currId);
+        $(".bottom").append('<br id=' + currId + '>');
+
       }
     }
 
