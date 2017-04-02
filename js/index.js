@@ -17,11 +17,15 @@ var bgPrompt = 0;
 var paraPrompt = 0;
 var bulletPrompt = 0;
 var numberPrompt = 0;
+var boldPrompt = 0;
 var textPrompt = [];
 var q = [];
 var highlightedElement;
 var numListCount = 1;
 var c = 0;
+
+var tag;
+var inner;
 
 var firstChosen = 0;
 
@@ -71,6 +75,13 @@ $(document).ready(function() {
   return app.init();
 });
 
+function bolder(selectTag) {
+    var listValue = selectTag.options[selectTag.selectedIndex].text;
+    alert(listValue);
+    document.getElementById(selectedId).style.fontWeight = listValue;
+    boldPrompt = 0;
+}
+
 
 app = {
   init: function() {
@@ -103,8 +114,36 @@ app = {
         $(this).removeClass("hova");
     });
 
+    if (msg == "DONE") {
+       return this.bot_post("What do you wanna do next?");
+    }
+
     if (msg.indexOf("Center") >= 0 || msg.indexOf("center") >= 0) {
+      if (selectedId == 0) {
+        return this.bot_post("You must select a text element first to center it.");
+      }
       document.getElementById(selectedId).style.textAlign = "center";
+      selectedId = 0;
+      msg = "DONE";
+    }
+
+    if (msg.indexOf("Bold") >= 0 || msg.indexOf("bold") >= 0 || boldPrompt == 1) {
+      boldPrompt = 1;
+      if (selectedId == 0) {
+        return this.bot_post("You must select a text element first to change its font weight.");
+      }
+      $(".messages").append("<div class='message'><div class='bot'>" + "Choose a font weight change and then type DONE" + "</div></div>");
+      selectedId = 0;
+      return $(".messages").append("<select onchange='bolder(this);' size='13'>" + "<option>normal</option><option>bold</option><option>bolder</option><option>lighter</option><option>100</option><option>200</option><option>300</option><option>400</option><option>500</option><option>600</option><option>700</option><option>800</option><option>900</option></select>");
+    }
+
+    if (msg.indexOf("Italics") >= 0 || msg.indexOf("italics") >= 0 || msg.indexOf("italicize") >= 0 || msg.indexOf("Italicize") >= 0) {
+      if (selectedId == 0) {
+        return this.bot_post("You must select a text element first to italicize it.");
+      }
+      document.getElementById(selectedId).style.fontStyle = "italic";
+      selectedId == 0
+      msg = "DONE";
     }
 
     if (bgPrompt == 1) {
@@ -179,13 +218,16 @@ app = {
     if (prompted == 1 && websiteInProgress != 1) {
       if (msg.indexOf("Yes") >= 0 || msg.indexOf("yes") >= 0) {
         websiteInProgress = 1;
+        prompted == 0;
+        numLines++;
         this.bot_post("Great! Let's get started. Try saying 'I want a page with a light blue background and green text.'");
         return;
 
       } else if (msg == "No" || msg == "no") {
-        prompted = 0;
-        return this.bot_post("Oh :( That's too bad. Maybe next time?)");
+        numLines = 0;
+        this.bot_post("Oh :( That's too bad. Maybe next time?)");
       } else {
+        numLines++;
         return this.bot_post("Sorry, I didn't understand (Try saying 'yes' or 'no').");
       }
     }
@@ -259,10 +301,15 @@ app = {
     if (msg.substring(0, 6) === "Hello!" && prompted != 1) {
       prompted = 1;
       return this.bot_post(greetings[Math.floor((Math.random() * 2))]);
+      numLines++;
 
-    } else {
+    } else if (numLines < 1) {
       prompted = 1;
+      numLines++;
       return this.bot_post(greetings[Math.floor((Math.random() * 2))]);
+    } else {
+        prompted = 1;
+        return this.bot_post("If you need help on what to do next, click on the info button at the bottom.");
     }
 
 
