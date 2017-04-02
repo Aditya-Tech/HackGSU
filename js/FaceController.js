@@ -2,6 +2,8 @@
 var open = false;
 var time = 1;
 
+
+
 var interval = setInterval(function() {
    if (time <= 1000) {
      if (open) {

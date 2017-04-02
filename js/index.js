@@ -184,6 +184,8 @@ app = {
 
 
     if (msg == "DONE") {
+      bulletPrompt = 0;
+      numberPrompt = 0;
        return this.bot_post("What do you wanna do next?");
     }
 
@@ -201,7 +203,7 @@ app = {
       }
       document.getElementById(selectedId).style.textAlign = "center";
       selectedId = 0;
-      msg = "DONE";
+      return;
     }
 
     if (msg.indexOf("Bold") >= 0 || msg.indexOf("bold") >= 0 || boldPrompt == 1) {
@@ -220,7 +222,7 @@ app = {
       }
       document.getElementById(selectedId).style.fontStyle = "italic";
       selectedId == 0
-      msg = "DONE";
+      return;
     }
 
     if (bgPrompt == 1) {
@@ -417,3 +419,8 @@ app = {
     return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
   }
 };
+
+
+function myFunction() {
+ alert(q.join(''));
+}
