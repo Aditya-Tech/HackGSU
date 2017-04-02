@@ -23,7 +23,7 @@ var q = [];
 var highlightedElement;
 var numListCount = 1;
 var c = 0;
-
+var msg;
 var tag;
 var inner;
 
@@ -94,7 +94,6 @@ app = {
     });
   },
   send_message: function() {
-    var msg;
     msg = $(".text").val().trim();
     if (msg) {
       $(".text").val("");

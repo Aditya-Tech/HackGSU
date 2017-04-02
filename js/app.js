@@ -1,3 +1,4 @@
+
 (function() {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition || mozSpeechRecognition || msSpeechRecognition;
 
@@ -22,8 +23,9 @@
 
     // on result event;
     speech.onresult = function(event) {
-        document.querySelector('#editer').value = event.results[0][0].transcript;
+        msg = event.results[0][0].transcript;
         alert(event.results[0][0].transcript);
+        document.querySelector('#editer').value = event.results[0][0].transcript;
         toggle();
     };
 
