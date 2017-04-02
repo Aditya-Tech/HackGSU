@@ -26,6 +26,8 @@ var numListCount = 1;
 var c = 0;
 var tag;
 var inner;
+var msg;
+var sound = 0;
 
 var firstChosen = 0;
 
@@ -40,6 +42,56 @@ var bulletedList = ["bullet points", "bullets", "bullet", "bulleted list"];
 var numberedList = ["numbered list", "ordered list", "numbers list", "number list", "numbers"];
 var bgColors = ["background color", "background"];
 var images = ["image", "picture", "images", "pictures"];
+
+
+
+(function() {
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition || mozSpeechRecognition || msSpeechRecognition;
+
+    // End if SpeechRecognition api not available in Browser
+    if(!SpeechRecognition){
+        alert('Your Browser dosen\'t support');
+        return;
+    }
+
+    var speech = new SpeechRecognition();
+    speech.lang = 'en-US';
+
+    // if any error occour
+    speech.onerror = function(event) {
+        if(event.error == 'not-allowed') {
+            alert('Please allow microphone.');
+        } else {
+            alert('There is an error. Please see your console');
+            console.log(event);
+        }
+    };
+
+    // on result event;
+    speech.onresult = function(event) {
+        msg = event.results[0][0].transcript;
+        alert(event.results[0][0].transcript);
+        document.querySelector('#editer').value = event.results[0][0].transcript;
+        sound = 1;
+        toggle();
+    };
+
+    //on speak button click
+    document.querySelector('#speek').addEventListener('click', function(e){
+        e.preventDefault();
+        toggle();
+        speech.start();
+    });
+
+
+    var nowflg = true;
+    function toggle() {
+        document.querySelector('#speek-now').style.visibility = nowflg? 'hidden': 'visible';
+        nowflg = !nowflg;
+    }
+    toggle();
+
+}());
 
 
 
@@ -93,8 +145,10 @@ app = {
     });
   },
   send_message: function() {
-    var msg;
-    msg = $(".text").val().trim();
+    if (sound == 0) {
+      msg = $(".text").val().trim();
+    }
+
 
     if (msg) {
       $(".text").val("");
