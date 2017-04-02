@@ -70,7 +70,7 @@ var images = ["image", "picture", "images", "pictures"];
     // on result event;
     speech.onresult = function(event) {
         msg = event.results[0][0].transcript;
-        alert(event.results[0][0].transcript);
+        $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
         document.querySelector('#editer').value = event.results[0][0].transcript;
         sound = 1;
         toggle();
@@ -161,7 +161,7 @@ app = {
   check: function(msg) {
 
 
-
+    sound = 0;
     $('.bottom').children().mouseover(function(e){
         $(".hova").removeClass("hova");
         $(e.target).addClass("hova");
