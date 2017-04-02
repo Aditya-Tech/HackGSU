@@ -19,6 +19,7 @@ var bulletPrompt = 0;
 var numberPrompt = 0;
 var boldPrompt = 0;
 var imagePrompt = 0;
+var movePrompt = 0;
 var textPrompt = [];
 var q = [];
 var highlightedElement;
@@ -42,7 +43,6 @@ var numberedList = ["numbered list", "ordered list", "numbers list", "number lis
 var bgColors = ["background color", "background"];
 var images = ["image", "picture", "images", "pictures"];
 
-/*
 
 (function() {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition || mozSpeechRecognition || msSpeechRecognition;
@@ -91,7 +91,7 @@ var images = ["image", "picture", "images", "pictures"];
     toggle();
 
 }());
-*/
+
 
 
 function hoverEffect() {
@@ -188,9 +188,17 @@ app = {
     }
 
 
-    if (msg.indexOf("Move") >= 0 || msg.indexOf("move") >= 0) {
-      return this.bot_post("");
+    if (msg.indexOf("Move") >= 0 || msg.indexOf("move") >= 0 || msg.indexOf("swap") >= 0 || msg.indexOf("Swap") >= 0) {
+      movePrompt = 1;
+      if (indexOfMover == 0 && indexOfNewPos == 0) {
+        return this.bot_post("Select the element that you want to move.");
+      } else if (indexOfMover != 0 && indexOfNewPos == 0) {
+        return this.bot_post("Select the element that you want to swap the first element with.");
+      } else {
+        return this.bot_post("Something went wrong. Please give me an instruction.");
+      }
     }
+
 
 
     if (msg.indexOf("Center") >= 0 || msg.indexOf("center") >= 0) {
