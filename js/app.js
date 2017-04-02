@@ -23,9 +23,7 @@
 
     // on result event;
     speech.onresult = function(event) {
-        msg = event.results[0][0].transcript;
-        bot_post(event.results[0][0].transcript);
-        alert(event.results[0][0].transcript);
+        $(".messages").append("<div class='message'><div class='bot'>" + event.results[0][0].transcript + "</div></div>");
         document.querySelector('#editer').value = event.results[0][0].transcript;
         toggle();
     };
