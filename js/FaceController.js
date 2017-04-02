@@ -1,5 +1,4 @@
 
-
 var open = false;
 var time = 1;
 

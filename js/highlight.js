@@ -1,4 +1,10 @@
 var editMode = 1;
+var indexOfMover = 0;
+var indexOfNewPos = 0;
+
+
+
+
 
 $(function() {
   $('.switch').change(function(){
@@ -14,8 +20,14 @@ function markActiveLink(el) {
     tag = document.getElementById(selectedId).tagName;
     inner = document.getElementById(selectedId).innerHTML;
 
-    if (tag == "P" || (tag[0] == 'H' && tag.length == 2) || tag == 'a') {
-      var mess = "You have chosen " + inner + ". What do you want to change about this element? (delete, change font weight, italicize, etc.)?"
+    if (indexOfMover == 0) {
+      indexOfMover = selectedId;
+    } else (indexOfMover != 0 && indexOfNewPos == 0 && (indexOfMover != indexOfNewPos)) {
+      indexOfNewPos = selectedId;
+    }
+
+    if ((tag == "P" || (tag[0] == 'H' && tag.length == 2) || tag == 'a') && (indexOfMover != 0)) {
+      var mess = "You have chosen " + inner + ". What do you want to change about this element? (delete, change font weight, italicize, swap with another element, etc.)?"
     }
 
     $(".messages").append("<div class='message'><div class='bot'>" + mess + "</div></div>");

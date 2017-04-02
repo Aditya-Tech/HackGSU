@@ -28,7 +28,6 @@ var tag;
 var inner;
 var msg;
 var sound = 0;
-
 var firstChosen = 0;
 
 
@@ -43,7 +42,7 @@ var numberedList = ["numbered list", "ordered list", "numbers list", "number lis
 var bgColors = ["background color", "background"];
 var images = ["image", "picture", "images", "pictures"];
 
-
+/*
 
 (function() {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition || mozSpeechRecognition || msSpeechRecognition;
@@ -71,6 +70,7 @@ var images = ["image", "picture", "images", "pictures"];
     speech.onresult = function(event) {
         msg = event.results[0][0].transcript;
         $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
+        check(msg);
         document.querySelector('#editer').value = event.results[0][0].transcript;
         sound = 1;
         toggle();
@@ -81,8 +81,7 @@ var images = ["image", "picture", "images", "pictures"];
         e.preventDefault();
         toggle();
         speech.start();
-    });
-
+      });
 
     var nowflg = true;
     function toggle() {
@@ -92,7 +91,7 @@ var images = ["image", "picture", "images", "pictures"];
     toggle();
 
 }());
-
+*/
 
 
 function hoverEffect() {
@@ -153,15 +152,21 @@ app = {
     if (msg) {
       $(".text").val("");
       $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
-      usedNums =
-      lines.add
       return this.check(msg);
     }
   },
+
   check: function(msg) {
 
 
     sound = 0;
+
+    if (msg.indexOf("Cancel") >= 0 || msg.indexOf("cancel") >= 0) {
+      indexOfMover = 0;
+      indexOfNewPos = 0;
+      return;
+    }
+
     $('.bottom').children().mouseover(function(e){
         $(".hova").removeClass("hova");
         $(e.target).addClass("hova");
@@ -176,8 +181,17 @@ app = {
     }
 
     if (msg.indexOf("Delete") >= 0 || msg.indexOf("delete") >= 0) {
-      document.getElementById(selectedId).outerHTML='';
+      if (selectedId == 0) {
+        return this.bot_post("You must select a text element first to center it.");
+      }
+      document.getElementById(selectedId).outerHTML = '';
     }
+
+
+    if (msg.indexOf("Move") >= 0 || msg.indexOf("move") >= 0) {
+      return this.bot_post("");
+    }
+
 
     if (msg.indexOf("Center") >= 0 || msg.indexOf("center") >= 0) {
       if (selectedId == 0) {
@@ -262,8 +276,6 @@ app = {
         $(".bottom").append('<li onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</li>');
         return this.bot_post("Any other list items? Type 'DONE' when you're finished.");
       }
-      q.push(['</ul>', 0]);
-      $(".bottom").append('</ul>');
       bulletPrompt = 0;
       hoverEffect();
       return;
@@ -281,8 +293,6 @@ app = {
         numListCount++;
         return this.bot_post("Any other list items? Type 'DONE' when you're finished.");
       }
-      q.push(['</ol>', 0]);
-      $(".bottom").append('</ol>');
       bulletPrompt = 0;
       hoverEffect();
       return;
@@ -356,12 +366,6 @@ app = {
     for (var i = 0; i < bulletedList.length; i++) {
       if (msg.indexOf(bulletedList[i]) >= 0) {
         bulletPrompt = 1;
-        currId = Math.floor((Math.random() * 1000000) + 1);
-        while (usedIds.includes(currId)) {
-          currId = Math.floor((Math.random() * 1000000) + 1);
-        }
-        q.push(['<ul onclick="markActiveLink(this);" id=' + currId + '>', currId]);
-        $(".bottom").append('<ul onclick="markActiveLink(this);" id=' + currId + '>');
         return this.bot_post("You want a bulleted list? Sure! Start entering your list and type 'DONE' when you're finished!")
       }
     }
@@ -369,12 +373,6 @@ app = {
     for (var i = 0; i < numberedList.length; i++) {
       if (msg.indexOf(numberedList[i]) >= 0) {
         numberPrompt = 1;
-        currId = Math.floor((Math.random() * 1000000) + 1);
-        while (usedIds.includes(currId)) {
-          currId = Math.floor((Math.random() * 1000000) + 1);
-        }
-        q.push(['<ol onclick="markActiveLink(this);" id=' + currId + '>', currId]);
-        $(".bottom").append('<ol onclick="markActiveLink(this);" id=' + currId + '>');
         return this.bot_post("You want a numbered list? Sure! Start entering your list and type 'DONE' when you're finished!")
       }
     }
