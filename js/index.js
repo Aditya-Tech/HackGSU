@@ -18,12 +18,12 @@ var paraPrompt = 0;
 var bulletPrompt = 0;
 var numberPrompt = 0;
 var boldPrompt = 0;
+var imagePrompt = 0;
 var textPrompt = [];
 var q = [];
 var highlightedElement;
 var numListCount = 1;
 var c = 0;
-var msg;
 var tag;
 var inner;
 
@@ -39,7 +39,7 @@ var beforeDirections = ["before", "above"];
 var bulletedList = ["bullet points", "bullets", "bullet", "bulleted list"];
 var numberedList = ["numbered list", "ordered list", "numbers list", "number list", "numbers"];
 var bgColors = ["background color", "background"];
-
+var images = ["image", "picture", "images", "pictures"];
 
 
 
@@ -82,7 +82,6 @@ function bolder(selectTag) {
     boldPrompt = 0;
 }
 
-
 app = {
   init: function() {
     return this.bind_events();
@@ -94,7 +93,9 @@ app = {
     });
   },
   send_message: function() {
+    var msg;
     msg = $(".text").val().trim();
+
     if (msg) {
       $(".text").val("");
       $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
@@ -105,6 +106,8 @@ app = {
   },
   check: function(msg) {
 
+
+
     $('.bottom').children().mouseover(function(e){
         $(".hova").removeClass("hova");
         $(e.target).addClass("hova");
@@ -113,8 +116,13 @@ app = {
         $(this).removeClass("hova");
     });
 
+
     if (msg == "DONE") {
        return this.bot_post("What do you wanna do next?");
+    }
+
+    if (msg.indexOf("Delete") >= 0 || msg.indexOf("delete") >= 0) {
+      document.getElementById(selectedId).outerHTML='';
     }
 
     if (msg.indexOf("Center") >= 0 || msg.indexOf("center") >= 0) {
@@ -133,7 +141,7 @@ app = {
       }
       $(".messages").append("<div class='message'><div class='bot'>" + "Choose a font weight change and then type DONE" + "</div></div>");
       selectedId = 0;
-      return $(".messages").append("<select onchange='bolder(this);' size='13'>" + "<option>normal</option><option>bold</option><option>bolder</option><option>lighter</option><option>100</option><option>200</option><option>300</option><option>400</option><option>500</option><option>600</option><option>700</option><option>800</option><option>900</option></select>");
+      return $(".messages").append("<div class='message'><div class='bot'>" + "<select onchange='bolder(this);' size='13'>" + "<option>normal</option><option>bold</option><option>bolder</option><option>lighter</option><option>100</option><option>200</option><option>300</option><option>400</option><option>500</option><option>600</option><option>700</option><option>800</option><option>900</option></select>" + "</div></div>");
     }
 
     if (msg.indexOf("Italics") >= 0 || msg.indexOf("italics") >= 0 || msg.indexOf("italicize") >= 0 || msg.indexOf("Italicize") >= 0) {
@@ -174,6 +182,18 @@ app = {
       $(".bottom").append('<div><p onclick="markActiveLink(this);" id=' + currId + '>' + msg + '</p></div>');
       hoverEffect();
       paraPrompt = 0;
+      return;
+    }
+
+    if (imagePrompt == 1) {
+      currId = Math.floor((Math.random() * 1000000) + 1);
+      while (usedIds.includes(currId)) {
+        currId = Math.floor((Math.random() * 1000000) + 1);
+      }
+      q.push(['<img src=' + msg + ' onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>', currId]);
+      $(".bottom").append('<img src=' + msg + ' onclick="markActiveLink(this);" onload="hoverEffect()" id=' + currId + '>');
+      hoverEffect();
+      imagePrompt = 0;
       return;
     }
 
@@ -264,6 +284,16 @@ app = {
       if (msg.indexOf(paragraph[i]) >= 0) {
           paraPrompt = 1;
           return this.bot_post("You want a to add a " + paragraph[i] + " to your site? Sure thing! What do you want it to say?");
+
+      }
+
+    }
+
+    for (var i = 0; i < images.length; i++) {
+
+      if (msg.indexOf(images[i]) >= 0) {
+          imagePrompt = 1;
+          return this.bot_post("You want to add an image to your site? Sure thing, send me the URL!");
 
       }
 
