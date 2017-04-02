@@ -20,6 +20,8 @@ function markActiveLink(el) {
     if (indexOfMover !== 0 || indexOfNewPos == 0) {
       var mess = "You have chosen " + inner + ". What do you want to change about this element? (delete, change font weight, italicize, change text, etc.)?"
     }
+    var hsg = new SpeechSynthesisUtterance(mess);
+    window.speechSynthesis.speak(hsg);
     $(".messages").append("<div class='message'><div class='bot'>" + mess + "</div></div>");
 
 }

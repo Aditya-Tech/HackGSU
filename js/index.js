@@ -32,13 +32,16 @@ var firstChosen = 0;
 var dl = "";
 var index = -1;;
 var open = false;
-
+var fontSizePrompt = 0;
+var voice = "";
 
 var q = [];
 var ids = [];
 
+var promptIdeas = ["Add title to page", "I want a bulleted list", "Add an image", "I want some text"];
+
 // possible user-entered keywords
-var greetings = ["Hello, I am Buildy! Do you want me to build you a website?", "Howdy! My name is Buildy and I can make you a website! Do you want me to (Yes/No)?"];
+var greetings = ["Hello, I am Webbo! Do you want me to build you a website (yes or no)?", "Howdy! My name is Webbo and I can make you a website! Do you want me to (yes or no)?"];
 var titles = ["title", "header", "head"];
 var paragraph = ["paragraph", "line", "sentence"];
 var afterDirections = ["after", "underneath", "below", "under"];
@@ -48,6 +51,7 @@ var numberedList = ["numbered list", "ordered list", "numbers list", "number lis
 var bgColors = ["background color", "background"];
 var images = ["image", "picture", "images", "pictures"];
 var breaks = ["space", "double space", "break"];
+var fontsizer = ["font size", "font-size", "text size", "text-size", "size of font", "bigger font", "larger font", "greater font", "smaller font", "lower font"];
 
 
 (function() {
@@ -135,9 +139,9 @@ $(document).ready(function() {
 
 function bolder(selectTag) {
     var listValue = selectTag.options[selectTag.selectedIndex].text;
-    alert(listValue);
     document.getElementById(selectedId).style.fontWeight = listValue;
     boldPrompt = 0;
+    selectedId = 0;
 }
 
 app = {
@@ -218,7 +222,6 @@ app = {
         return this.bot_post("You must select a text element first to change its font weight.");
       }
       $(".messages").append("<div class='message'><div class='bot'>" + "Choose a font weight change and then type DONE" + "</div></div>");
-      selectedId = 0;
       return $(".messages").append("<div class='message'><div class='bot'>" + "<select onchange='bolder(this);' size='13'>" + "<option>normal</option><option>bold</option><option>bolder</option><option>lighter</option><option>100</option><option>200</option><option>300</option><option>400</option><option>500</option><option>600</option><option>700</option><option>800</option><option>900</option></select>" + "</div></div>");
     }
 
@@ -321,7 +324,7 @@ app = {
 
       } else if (msg == "No" || msg == "no") {
         numLines = 0;
-        this.bot_post("Oh :( That's too bad. Maybe next time?)");
+        return this.bot_post("Oh :( That's too bad. Maybe next time?");
       } else {
         numLines++;
         return this.bot_post("Sorry, I didn't understand (Try saying 'yes' or 'no').");
@@ -352,19 +355,6 @@ app = {
     for (var i = 0; i < titles.length; i++) {
       if (msg.indexOf(titles[i]) >= 0) {
           titlePrompt = 1;
-          setInterval(function() {
-            if (c <= 4) {
-              if (open) {
-                document.getElementById("faceImage").src = "closed-mouth.png";
-                open = false;
-              } else if (!open) {
-                document.getElementById("faceImage").src = "open-mouth2.png";
-                open = true;
-              }
-              c++;
-            }
-         }, 200);
-         c = 0;
         return this.bot_post("You want a to add a " + titles[i] + " to your site? Sure thing! What do you want it to be called?");
       }
     }
@@ -377,6 +367,13 @@ app = {
 
       }
 
+    }
+
+    for (var i = 0; i < fontsizer.length; i++) {
+      if (msg.indexOf(fontsizer[i]) >= 0) {
+        fontSizePrompt = 1;
+        return this.bot_post("")
+      }
     }
 
     for (var i = 0; i < images.length; i++) {
@@ -416,12 +413,29 @@ app = {
       return this.bot_post(greetings[Math.floor((Math.random() * 2))]);
     } else {
         prompted = 1;
-        return this.bot_post("If you need help on what to do next, click on the info button at the bottom.");
+        return this.bot_post("If you are stuck, try typing '" + promptIdeas[Math.floor((Math.random() * 4))] + "'");
     }
 
 
   },
   bot_post: function(msg) {
+    var bsg = new SpeechSynthesisUtterance(msg);
+    window.speechSynthesis.speak(bsg);
+    document.getElementById("faceImage").src = "closed-mouth.png";
+    setInterval(function() {
+      if (c <= 24) {
+        if (open) {
+          document.getElementById("faceImage").src = "closed-mouth.png";
+          open = false;
+        } else if (!open) {
+          document.getElementById("faceImage").src = "open-mouth2.png";
+          open = true;
+        }
+        c++;
+      }
+   }, 200);
+   c = 0;
+   document.getElementById("faceImage").src = "closed-mouth.png";
     return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
   }
 };
