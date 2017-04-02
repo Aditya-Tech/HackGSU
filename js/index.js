@@ -70,7 +70,7 @@ var images = ["image", "picture", "images", "pictures"];
     speech.onresult = function(event) {
         msg = event.results[0][0].transcript;
         $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
-        check(msg);
+        app.check(msg);
         document.querySelector('#editer').value = event.results[0][0].transcript;
         sound = 1;
         toggle();
