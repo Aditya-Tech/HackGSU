@@ -34,6 +34,7 @@ var index = -1;;
 var open = false;
 var fontSizePrompt = 0;
 var voice = "";
+var resetPrompt = 0;
 
 var q = [];
 var ids = [];
@@ -52,6 +53,7 @@ var bgColors = ["background color", "background"];
 var images = ["image", "picture", "images", "pictures"];
 var breaks = ["space", "double space", "break"];
 var fontsizer = ["font size", "font-size", "text size", "text-size", "size of font", "bigger font", "larger font", "greater font", "smaller font", "lower font"];
+var resetter = ["reset", "clear all", "start over", "restart"];
 
 
 (function() {
@@ -187,6 +189,14 @@ app = {
           $(this).removeClass("hova");
       });
 
+    if (resetPrompt == 1 && (msg == "yes" || msg == "Yes" || msg == "YES")) {
+      document.getElementById(elementID).userPage = "";
+      return;
+    }
+
+    if (resetPrompt == 1 && (msg == "no" || msg == "No" || msg == "NO")) {
+      return this.bot_post("What do you wanna do next?");
+    }
 
 
     if (msg == "DONE") {
@@ -200,11 +210,7 @@ app = {
         return this.bot_post("You must select a text element first to delete it.");
       }
       document.getElementById(selectedId).outerHTML = '';
-      index = ids.indexOf(selectedId);
-
-      var curr = q[index];
-      curr = '';
-      q[index] = curr;
+      return;
     }
 
 
@@ -319,7 +325,7 @@ app = {
         websiteInProgress = 1;
         prompted == 0;
         numLines++;
-        this.bot_post("Great! Let's get started. Try saying 'I want a page with a light blue background and green text.'");
+        this.bot_post("Great! Let's get started. Try saying 'Add a title' or 'Add a header'");
         return;
 
       } else if (msg == "No" || msg == "no") {
@@ -369,13 +375,6 @@ app = {
 
     }
 
-    for (var i = 0; i < fontsizer.length; i++) {
-      if (msg.indexOf(fontsizer[i]) >= 0) {
-        fontSizePrompt = 1;
-        return this.bot_post("")
-      }
-    }
-
     for (var i = 0; i < images.length; i++) {
 
       if (msg.indexOf(images[i]) >= 0) {
@@ -389,17 +388,23 @@ app = {
     for (var i = 0; i < bulletedList.length; i++) {
       if (msg.indexOf(bulletedList[i]) >= 0) {
         bulletPrompt = 1;
-        return this.bot_post("You want a bulleted list? Sure! Start entering your list and type 'DONE' when you're finished!")
+        return this.bot_post("You want a bulleted list? Sure! Start entering your list and type 'DONE' when you're finished!");
       }
     }
 
     for (var i = 0; i < numberedList.length; i++) {
       if (msg.indexOf(numberedList[i]) >= 0) {
         numberPrompt = 1;
-        return this.bot_post("You want a numbered list? Sure! Start entering your list and type 'DONE' when you're finished!")
+        return this.bot_post("You want a numbered list? Sure! Start entering your list and type 'DONE' when you're finished!");
       }
     }
 
+    for (var i = 0; i < resetter.length; i++) {
+      if (msg.indexOf(resetter[i]) >= 0) {
+        resetPrompt = 1;
+        return this.bot_post("Are you absolutely sure you want to start over (yes or no)?");
+      }
+    }
 
 
     if (msg.substring(0, 6) === "Hello!" && prompted != 1) {

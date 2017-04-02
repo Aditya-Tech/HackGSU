@@ -18,7 +18,7 @@ function markActiveLink(el) {
 
 
     if (indexOfMover !== 0 || indexOfNewPos == 0) {
-      var mess = "You have chosen " + inner + ". What do you want to change about this element? (delete, change font weight, italicize, change text, etc.)?"
+      var mess = "You have chosen " + inner + ". What do you want to change about this element? (delete, italicize, center, bold)?"
     }
     var hsg = new SpeechSynthesisUtterance(mess);
     window.speechSynthesis.speak(hsg);
