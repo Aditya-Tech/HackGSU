@@ -30,6 +30,8 @@ var msg;
 var sound = 0;
 var firstChosen = 0;
 var dl = "";
+var index = -1;;
+var open = false;
 
 
 var q = [];
@@ -191,9 +193,14 @@ app = {
 
     if (msg.indexOf("Delete") >= 0 || msg.indexOf("delete") >= 0) {
       if (selectedId == 0) {
-        return this.bot_post("You must select a text element first to center it.");
+        return this.bot_post("You must select a text element first to delete it.");
       }
       document.getElementById(selectedId).outerHTML = '';
+      index = ids.indexOf(selectedId);
+
+      var curr = q[index];
+      curr = '';
+      q[index] = curr;
     }
 
 
@@ -202,7 +209,6 @@ app = {
         return this.bot_post("You must select a text element first to center it.");
       }
       document.getElementById(selectedId).style.textAlign = "center";
-      selectedId = 0;
       return;
     }
 
@@ -221,7 +227,7 @@ app = {
         return this.bot_post("You must select a text element first to italicize it.");
       }
       document.getElementById(selectedId).style.fontStyle = "italic";
-      selectedId == 0
+      selectedId == 0;
       return;
     }
 
@@ -349,10 +355,10 @@ app = {
           setInterval(function() {
             if (c <= 4) {
               if (open) {
-                document.getElementById("image").src = "closed-mouth.png";
+                document.getElementById("faceImage").src = "closed-mouth.png";
                 open = false;
               } else if (!open) {
-                document.getElementById("image").src = "open-mouth2.png";
+                document.getElementById("faceImage").src = "open-mouth2.png";
                 open = true;
               }
               c++;
@@ -420,7 +426,11 @@ app = {
   }
 };
 
+function myFanction() {
 
-function myFunction() {
- alert(q.join(''));
+  var blob = new Blob([$(".bottom").html()
+], {type: "text/plain;charset=utf-8"});
+
+  saveAs(blob, "YourWebpage.html");
+
 }
