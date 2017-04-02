@@ -15,7 +15,6 @@
   border: 0;
   outline: 0;
 }
-
 body {
   font-family: Arial;
 }
@@ -107,33 +106,26 @@ body {
 .switch .icon-remove {
 	float: right;
 }
-
 .top {
   background-color: #e74c3c;
   height: 800px;
   position:relative;
 }
-
 .container {
   background-color: #808080;
   height: 100px;
   position:relative;
 }
-
 .left {
   display:inline-block;
 }
-
 .right {
   display:inline-block;
 }
-
 .bottom {
   position:relative;
   height:100px;
 }
-
-
 .chat {
   width: 300px;
   overflow: scroll;
@@ -153,7 +145,6 @@ body {
   margin: auto;
   box-sizing: border-box;
 }
-
 #faceImage {
   align:center;
   overflow: scroll;
@@ -172,7 +163,6 @@ body {
   margin: auto;
   box-sizing: border-box;
 }
-
 .chat .messages {
   position: absolute;
   left: 0;
@@ -249,11 +239,9 @@ body {
   padding: 0 20px;
   box-sizing: border-box;
 }
-
 .hova {
       background-color: pink;
 }
-
     </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
@@ -289,19 +277,18 @@ text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
           <input class="text" contenteditable="true" placeholder="Type your message here..."></input>
         </form>
       </div>
-
     </div>
-
   </div>
-  <div style="text-align:center;height:200px;">
+
+  <div>
     <form role="form">
-           <legend>Speech to text</legend> <em id="speek-now">Speak now...</em>
-           <div class="form-group">
-               <textarea type="text" class="form-control" id="editer"rows="10"> </textarea>
-           </div>
-           <button type="button" class="btn btn-primary" id="again">Click Here to Speek</button>
-       </form>
-   <script src="js/voice-recognition-testing.js"></script>
+            <legend>Speech to text</legend> <em id="speek-now">Speak now...</em>
+            <div class="form-group">
+                <textarea type="text" class="form-control" id="editer" placeholder="Input field" rows="10"> </textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="speek">Click Here to Speek</button>
+        </form>
+    <script src="js/app.js"></script>
   </div>
 
   <div class="container" id="info-page" >
@@ -325,6 +312,7 @@ text-shadow: 2px 8px 6px rgba(0,0,0,0.2),
 
     <p onclick="markActiveLink(this);">test</p>
   </div>
+
 
 
 
